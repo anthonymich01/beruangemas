@@ -1,21 +1,10 @@
 import React from "react"
 import { Redirect, Route } from "react-router-dom"
-import {
-  IonApp,
-  IonIcon,
-  IonLabel,
-  IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonTabs,
-  setupConfig
-} from "@ionic/react"
+import { IonApp, IonRouterOutlet, setupConfig } from "@ionic/react"
 import { IonReactRouter } from "@ionic/react-router"
-import { home, person, playCircle, trendingUp } from "ionicons/icons"
-import Home from "./pages/Home"
-import Video from "./pages/Video"
-import Signal from "./pages/Signal"
-import Account from "./pages/Account"
+
+/* Add Push Notification Service */
+import "./services/pushNotification"
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css"
@@ -36,39 +25,22 @@ import "@ionic/react/css/display.css"
 /* Theme variables */
 import "./theme/variables.css"
 
+import Welcome from "./pages/Welcome"
+import Login from "./pages/Login"
+import Tabs from "./Tabs"
+
 /* Force theme to Material Design */
 setupConfig({ mode: "md" })
 
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route path="/home" component={Home} exact={true} />
-          <Route path="/video" component={Video} exact={true} />
-          <Route path="/signal" component={Signal} exact={true} />
-          <Route path="/account" component={Account} exact={true} />
-          <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="home" href="/home">
-            <IonIcon icon={home} />
-            <IonLabel>Home</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="video" href="/video">
-            <IonIcon icon={playCircle} />
-            <IonLabel>Video</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="signal" href="/signal">
-            <IonIcon icon={trendingUp} />
-            <IonLabel>Live Signal</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="account" href="/account">
-            <IonIcon icon={person} />
-            <IonLabel>Account</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
+      <IonRouterOutlet>
+        <Route path="/welcome" component={Welcome} exact />
+        <Route path="/login" component={Login} exact />
+        <Route path="/tabs" component={Tabs} exact={false} />
+        <Route path="/" render={() => <Redirect to="/welcome" from="/" exact />} exact />
+      </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
 )
