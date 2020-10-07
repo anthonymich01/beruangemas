@@ -27,6 +27,7 @@ import "./theme/variables.css"
 
 import Welcome from "./pages/Welcome"
 import Login from "./pages/Login"
+import WatchlistEdit from "./pages/WatchlistEdit"
 import Tabs from "./Tabs"
 
 /* Force theme to Material Design */
@@ -38,6 +39,7 @@ const App: React.FC = () => (
       <IonRouterOutlet>
         <Route path="/welcome" component={Welcome} exact />
         <Route path="/login" component={Login} exact />
+        <Route path="/watchlist-edit" component={WatchlistEdit} exact />
         <Route path="/tabs" component={Tabs} exact={false} />
         <Route path="/" render={() => <Redirect to="/welcome" from="/" exact />} exact />
       </IonRouterOutlet>

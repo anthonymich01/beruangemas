@@ -11,13 +11,7 @@ class Signal extends React.Component {
             <IonTitle>Tab 3</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent fullscreen>
-          <IonHeader collapse="condense">
-            <IonToolbar>
-              <IonTitle size="large">Tab 3</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-        </IonContent>
+        <IonContent fullscreen></IonContent>
       </IonPage>
     )
   }

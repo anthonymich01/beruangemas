@@ -8,3 +8,7 @@ export type requestLoginUser = {
   email: string
   password: string
 }
+
+export type requestTVSymbol = {
+  s: string
+}

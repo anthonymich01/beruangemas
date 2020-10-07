@@ -28,11 +28,11 @@ class Account extends React.Component<any, AccountState> {
   ionViewWillEnter = async (): Promise<void> => {
     try {
       const response = await api.getUserDetail()
-      if (response.status === 200) {
+      if (response.status === 200 && response.data["id"]) {
         this.setState({ isLogin: true })
-      }
+      } else throw new Error("User Account Invalid")
     } catch (error) {
-      this.setState({ isLogin: false })
+      this.handleLogout()
     }
   }
 
@@ -45,6 +45,7 @@ class Account extends React.Component<any, AccountState> {
 
   render() {
     const { isLogoutAlert } = this.state
+    console.log(this.state)
 
     return (
       <IonPage>
