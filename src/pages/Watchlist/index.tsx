@@ -28,7 +28,9 @@ class Watchlist extends React.Component<any, WatchlistState> {
       if (response.status === 200) {
         this.setState({ symbols: response.data["symbols"] })
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   handleEditButton = () => this.props.history.push("/watchlist-edit")

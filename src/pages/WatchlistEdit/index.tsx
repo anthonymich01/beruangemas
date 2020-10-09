@@ -10,15 +10,25 @@ import {
   IonInput,
   IonItem,
   IonLabel,
-  withIonLifeCycle
+  withIonLifeCycle,
+  IonList,
+  IonListHeader,
+  IonItemDivider
 } from "@ionic/react"
 import * as api from "../../api"
+import _ from "lodash"
 import "./style.scss"
+import { addCircleOutline, trashOutline } from "ionicons/icons"
+
+type listSymbols = {
+  code: string
+  description: string
+}
 
 type WatchlistEditState = {
   symbols: Array<string>
   s: string
-  listSymbols: Array<any>
+  listSymbols: Array<listSymbols>
 }
 
 class WatchlistEdit extends React.Component<any, WatchlistEditState> {
@@ -52,9 +62,43 @@ class WatchlistEdit extends React.Component<any, WatchlistEditState> {
     }
   }
 
+  handleAddWatchlist = async (code: string) => {
+    const symbols: Array<string> = this.state.symbols
+    const findDuplicateSymbol = symbols.find((symbol) => symbol === code)
+    if (findDuplicateSymbol) {
+      return
+    }
+
+    const newSymbols: Array<string> = [...symbols, code]
+    const request = { list: newSymbols }
+
+    try {
+      const res = await api.updateUserWatchlist(request)
+      if (res.status === 200) {
+        this.setState({ symbols: newSymbols })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  handleRemoveWatchlist = async (code: string) => {
+    const symbols: Array<string> = this.state.symbols
+    const newSymbols: Array<string> = _.without(symbols, code)
+    const request = { list: newSymbols }
+
+    try {
+      const res = await api.updateUserWatchlist(request)
+      if (res.status === 200) {
+        this.setState({ symbols: newSymbols })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   render() {
     const { symbols, s, listSymbols } = this.state
-    console.log(symbols, listSymbols)
 
     return (
       <IonPage>
@@ -69,10 +113,38 @@ class WatchlistEdit extends React.Component<any, WatchlistEditState> {
         <IonContent fullscreen>
           <IonItem>
             <IonLabel position="floating">
-              Cari Saham ( Contoh: <b>ASRI</b> )
+              Add Stock ( Ex: <b>ASRI</b> / <b>Alam Su...</b> )
             </IonLabel>
             <IonInput value={s} onIonChange={this.handleSearchChange} />
           </IonItem>
+          {listSymbols.length >= 1 && (
+            <IonList>
+              <IonListHeader>
+                <h3>Add To Watchlist</h3>
+              </IonListHeader>
+              {listSymbols.map((v, k) => (
+                <IonItem key={k} button detail detailIcon={addCircleOutline} onClick={() => this.handleAddWatchlist(v["code"])}>
+                  <IonLabel>
+                    <h2>{v["code"]}</h2>
+                    <p>{v["description"]}</p>
+                  </IonLabel>
+                </IonItem>
+              ))}
+            </IonList>
+          )}
+          <IonList>
+            <IonItemDivider />
+            <IonListHeader>
+              <h3>My Watchlist</h3>
+            </IonListHeader>
+            {symbols.map((v, k) => (
+              <IonItem key={k} button detail detailIcon={trashOutline} onClick={() => this.handleRemoveWatchlist(v)}>
+                <IonLabel>
+                  <h2>{v}</h2>
+                </IonLabel>
+              </IonItem>
+            ))}
+          </IonList>
         </IonContent>
       </IonPage>
     )

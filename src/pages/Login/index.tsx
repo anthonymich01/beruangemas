@@ -40,10 +40,10 @@ class Login extends React.Component<any, LoginState> {
       if (response.status === 200) {
         localStorage.setItem("authToken", response.data.access_token)
         window.location.replace("/tabs/home")
-      }
+      } else throw new Error("Error Occurred!")
     } catch (error) {
-      const errData = error.response.data
-      this.setState({ isToast: true, toastMsg: errData.error })
+      const errData = error.response ? error.response.data.error : error.message
+      this.setState({ isToast: true, toastMsg: errData })
     }
   }
 

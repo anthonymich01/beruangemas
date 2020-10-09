@@ -1,5 +1,5 @@
 import axios from "axios"
-import { requestLoginUser, requestRegisterUser, requestTVSymbol } from "./type"
+import { requestLoginUser, requestRegisterUser, requestTVSymbol, requestUpdateWatchlist } from "./type"
 
 // URLs
 const BASE_URL = "http://localhost:3010"
@@ -43,6 +43,11 @@ export const loginUser = async (request: requestLoginUser) => {
 // Get User Watchlist
 export const getUserWatchlist = async () => {
   return axios.get(API_WATCHLIST_V1, authHeaders)
+}
+
+// Update User Watchlist
+export const updateUserWatchlist = async (request: requestUpdateWatchlist) => {
+  return axios.post(API_WATCHLIST_V1, request, authHeaders)
 }
 
 // Get Auto Complete Symbol TV

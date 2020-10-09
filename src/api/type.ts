@@ -12,3 +12,7 @@ export type requestLoginUser = {
 export type requestTVSymbol = {
   s: string
 }
+
+export type requestUpdateWatchlist = {
+  list: Array<string>
+}

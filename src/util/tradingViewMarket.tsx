@@ -23,31 +23,30 @@ let src = {
   ]
 }
 
-export default class TVMarket extends React.Component<any, any> {
-  componentDidUpdate() {
-    const { symbols } = this.props
+export default class TVMarket extends React.PureComponent<any, any> {
+  myRef = React.createRef<HTMLDivElement>()
 
-    if (symbols.length >= 1) {
-      const symbolsArray = symbols.map((symbol: string) => ({ s: `IDX:${symbol}` }))
-      src.tabs[0].symbols = symbolsArray
-      const script = document.createElement("script")
-      script.src = "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js"
-      script.async = true
-      script.innerHTML = JSON.stringify(src)
-      document.getElementById("myContainer")!.appendChild(script)
+  componentDidUpdate = () => {
+    if (document.getElementById("scriptTV")) {
+      this.myRef.current!.removeChild(document.getElementById("scriptTV")!)
     }
+
+    const { symbols } = this.props
+    const symbolsArray = symbols.map((symbol: string) => ({ s: `IDX:${symbol}` }))
+    src.tabs[0].symbols = symbolsArray
+
+    const script = document.createElement("script")
+    script.src = "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js"
+    script.async = true
+    script.id = "scriptTV"
+    script.innerHTML = JSON.stringify(src)
+    this.myRef.current!.appendChild(script)
   }
 
   render() {
-    const { symbols } = this.props
-
-    if (symbols.length < 1) {
-      return <div />
-    }
-
     return (
-      <div id="myContainer" style={{ height: "100%" }}>
-        <div className="tradingview-widget-container">
+      <div id="myContainer" style={{ height: "99.9%" }}>
+        <div className="tradingview-widget-container" ref={this.myRef}>
           <div className="tradingview-widget-container__widget" />
         </div>
       </div>
